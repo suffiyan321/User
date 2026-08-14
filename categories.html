@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Categories - TechCore</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/user.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background: #0d1117; color: #c9d1d9; min-height: 100vh; background-image: radial-gradient(circle at 50% 0%, #161b22 0%, #0d1117 75%); }
+    nav { background: rgba(22, 27, 34, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid #30363d; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+    nav h2 { color: #fff; font-size: 1.4rem; font-weight: 700; }
+    nav div { display: flex; align-items: center; gap: 20px; }
+    nav a { color: #8b949e; text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+    nav a:hover, nav a.active { color: #58a6ff; }
+    .badge { background: #238636; color: #fff; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; }
+    .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+    .hero-section { text-align: center; margin-bottom: 50px; }
+    .hero-section h1 { font-size: 2.5rem; color: #fff; margin-bottom: 10px; background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+    .cat-card { background: rgba(22, 27, 34, 0.6); border: 1px solid #30363d; border-radius: 16px; padding: 30px 20px; text-align: center; text-decoration: none; color: #c9d1d9; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .cat-card:hover { transform: translateY(-8px); border-color: #58a6ff; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(88, 166, 255, 0.2); }
+    .icon-wrapper { width: 70px; height: 70px; border-radius: 50%; background: rgba(48, 54, 61, 0.5); border: 1px solid #30363d; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin-bottom: 20px; overflow: hidden; }
+    .icon-wrapper img { width: 100%; height: 100%; object-fit: cover; }
+    .cat-title { font-size: 1.25rem; font-weight: 600; color: #f0f6fc; margin-bottom: 8px; }
+    .cat-subtitle { font-size: 0.85rem; color: #8b949e; }
+    .action-btn { margin-top: 20px; font-size: 0.85rem; font-weight: 600; color: #58a6ff; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <h2>⚡ TechCore</h2>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="categories.html" class="active">Categories</a>
+      <a href="cart.html">Cart 🛒 <span id="cartCountBadge" class="badge">0</span></a>
+      <a href="profile.html">Profile</a>
+      <button onclick="handleLogout()" style="background: transparent; border: 1px solid #f85149; color: #f85149; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 600;">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="hero-section">
+      <h1>Browse Categories</h1>
+      <p>Find the best items tailored to your specific needs</p>
+    </div>
+
+    
+    <div class="category-grid" id="categoryContainer"></div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      if (typeof verifyUserSession === "function") verifyUserSession();
+      loadUserCategoriesFromDB();
+    };
+
+    function loadUserCategoriesFromDB() {
+      var container = document.getElementById('categoryContainer');
+      if (!container) return;
+
+      db.from('categories').select('*').order('id', { ascending: false }).then(function(res) {
+        if (res.error) return console.error(res.error);
+        var categories = res.data || [];
+        container.innerHTML = "";
+
+        if (categories.length === 0) {
+          container.innerHTML = "<p style='grid-column: 1/-1; text-align:center;'>No categories found.</p>";
+          return;
+        }
+
+        for (var i = 0; i < categories.length; i++) {
+          var cat = categories[i];
+          var iconDisplay = (cat.image && cat.image.startsWith('http')) 
+            ? '<img src="' + cat.image + '" alt="' + cat.name + '">' 
+            : (cat.image || '📦');
+
+          container.innerHTML += '<a href="products.html?category=' + encodeURIComponent(cat.name) + '" class="cat-card">' +
+            '<div class="icon-wrapper">' + iconDisplay + '</div>' +
+            '<div class="cat-title">' + cat.name + '</div>' +
+            '<div class="cat-subtitle">' + (cat.description || 'Explore products') + '</div>' +
+            '<div class="action-btn">Explore Products &rarr;</div>' +
+          '</a>';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

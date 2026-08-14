@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/user.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    body { background: #0d1117; color: #c9d1d9; }
+    nav { background: #161b22; border-bottom: 1px solid #30363d; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+    nav a { color: #c9d1d9; text-decoration: none; margin-left: 15px; font-weight: 600; }
+    .container { max-width: 600px; margin: 50px auto; padding: 0 20px; }
+    .box { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 30px; text-align: center; }
+  </style>
+</head>
+<body>
+  <nav>
+    <h2 style="color:#fff;">TechCore Store</h2>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="profile.html" style="color:#2563eb;">Profile</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="box">
+      <h2 style="color:#fff; margin-bottom:10px;">User Profile</h2>
+      <p style="color:#8b949e; margin-bottom:20px;">Logged in Email:</p>
+      <h3 id="userEmailText" style="color:#38bdf8; margin-bottom:30px;">Loading...</h3>
+      <button onclick="handleLogout()" style="background:rgba(248,81,73,0.2); color:#f85149; border:1px solid #f85149; padding:10px 20px; border-radius:6px; cursor:pointer; font-weight:bold;">Logout Account</button>
+    </div>
+  </div>
+
+  <script>window.onload = verifyUserSession;</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/user.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+    body { background: #0d1117; color: #c9d1d9; }
+    .container { max-width: 600px; margin: 40px auto; padding: 0 20px; }
+    .box { background: #161b22; border: 1px solid #30363d; padding: 25px; border-radius: 8px; }
+    label { display: block; margin-top: 15px; font-size: 0.85rem; }
+    input, select { width: 100%; padding: 10px; background: #0d1117; border: 1px solid #30363d; border-radius: 6px; color: #fff; margin-top: 5px; }
+    button { width: 100%; padding: 12px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-weight: bold; margin-top: 25px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 style="color:#fff; margin-bottom:20px;">Shipping Details</h2>
+    <div class="box">
+      <p style="font-size:0.85rem; color:#8b949e;">Logined Email: <b id="userEmailText" style="color:#fff;"></b></p>
+      
+      <label>Full Name</label>
+      <input type="text" id="cName" placeholder="John Doe">
+
+      <label>Phone Number</label>
+      <input type="text" id="cPhone" placeholder="+923001234567">
+
+      <label>Shipping Address</label>
+      <input type="text" id="cAddress" placeholder="House #, Street, City">
+
+      <label>Payment Method</label>
+      <select id="cPayment">
+        <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+        <option value="Card Payment">Credit/Debit Card</option>
+      </select>
+
+      <button onclick="confirmCartOrder()">Confirm & Place Order</button>
+    </div>
+  </div>
+
+  <script>window.onload = verifyUserSession;</script>
+</body>
+</html>
